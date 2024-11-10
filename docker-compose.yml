@@ -1,0 +1,6 @@
+﻿services:
+  etytool:
+    image: etytool
+    build:
+      context: .
+      dockerfile: Dockerfile
