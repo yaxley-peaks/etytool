@@ -1,7 +1,13 @@
+using System.Configuration;
+using EtyTool.Context;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<EtyToolContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("default")));
 
 var app = builder.Build();
 
