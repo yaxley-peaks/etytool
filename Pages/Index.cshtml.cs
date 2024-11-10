@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace EtyTool.Pages;
@@ -11,4 +10,6 @@ public class IndexModel(ILogger<IndexModel> logger) : PageModel
     {
         return Page();
     }
+
+
 }
