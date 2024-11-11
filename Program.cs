@@ -10,7 +10,18 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<EtyToolContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("default")));
 
+var mwClientName = builder.Configuration["MWHttpClientName"];
+ArgumentException.ThrowIfNullOrEmpty(mwClientName);
+builder.Services.AddHttpClient(
+    mwClientName,
+    client =>
+    {
+        client.BaseAddress=new Uri("https://dictionaryapi.com/api/v3/references/collegiate/json/");
+        client.DefaultRequestHeaders.UserAgent.ParseAdd("EtyTool"); 
+    });
+
 builder.Services.AddSingleton<LangService>();
+builder.Services.AddScoped<EtymologyService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,4 +1,5 @@
 using EtyTool.Entities;
+using EtyTool.JsonSchema;
 using EtyTool.Models;
 using EtyTool.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EtyTool.Pages;
 
-public class IndexModel(ILogger<IndexModel> logger, LangService ls)
+public class IndexModel(ILogger<IndexModel> logger, LangService ls, EtymologyService es)
     : PageModel
 {
     public SelectList? SelectList { get; set; }
@@ -19,6 +20,7 @@ public class IndexModel(ILogger<IndexModel> logger, LangService ls)
         logger.Log(LogLevel.Information, "Get Page");
         SelectList = new SelectList(ls.Langs,
             nameof(Lang.Id), nameof(Lang.Name));
+        es.Do();
         return Page();
     }
 
