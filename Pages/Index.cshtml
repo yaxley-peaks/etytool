@@ -5,8 +5,8 @@
 }
 <div class="text-center">
     <form method="post">
-        <select asp-for="FormDto.Language" asp-items="Model.SelectList"></select>
-        <textarea asp-for="FormDto.Text"></textarea>
+        <select asp-for="FormDto!.Language" asp-items="Model.SelectList"></select>
+        <textarea asp-for="FormDto!.Text"></textarea>
         <input type="submit"/>
     </form>
 </div>

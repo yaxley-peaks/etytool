@@ -1,5 +1,6 @@
 using System.Configuration;
 using EtyTool.Context;
+using EtyTool.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<EtyToolContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("default")));
 
+builder.Services.AddSingleton<LangService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
