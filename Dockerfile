@@ -20,4 +20,6 @@ RUN dotnet publish "EtyTool.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:U
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+ARG ASPNETCORE_HTTP_PORTS=80;8080
+ARG ASPNETCORE_HTTPS_PORTS=443;8081
 ENTRYPOINT ["dotnet", "EtyTool.dll"]

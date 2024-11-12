@@ -3,23 +3,36 @@
     image: postgres:16
     container_name: etydb
     environment:
-      POSTGRES_USER: etytool
-      POSTGRES_PASSWORD: etytool123#
-      POSTGRES_DB: etytool
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: ${PG_DBNAME}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d mydb"]
+      test: ["CMD-SHELL", "pg_isready -U ${PG_USER} -d ${PG_DBNAME}"]
       interval: 10s
       timeout: 5s
       retries: 5
     restart: unless-stopped
+    networks:
+      - pgnet
   etytool:
     image: etytool
+    ports:
+      - 8080:8080
     build:
+      target: final
       context: .
       dockerfile: Dockerfile
+    depends_on:
+      - postgres  
+    networks:
+      - pgnet
 volumes:
   postgres_data:
+    
+networks:
+  pgnet:
+    name: shared-db-network
