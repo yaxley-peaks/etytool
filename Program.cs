@@ -16,8 +16,8 @@ builder.Services.AddHttpClient(
     mwClientName,
     client =>
     {
-        client.BaseAddress=new Uri("https://dictionaryapi.com/api/v3/references/collegiate/json/");
-        client.DefaultRequestHeaders.UserAgent.ParseAdd("EtyTool"); 
+        client.BaseAddress = new Uri("https://dictionaryapi.com/api/v3/references/collegiate/json/");
+        client.DefaultRequestHeaders.UserAgent.ParseAdd("EtyTool");
     });
 
 builder.Services.AddSingleton<LangService>();

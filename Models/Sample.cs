@@ -2,7 +2,7 @@ namespace EtyTool.Models;
 
 public class Sample
 {
-  public static string text = @"[
+    public static string text = @"[
   {
     ""meta"": {
       ""id"": ""the:1"",
