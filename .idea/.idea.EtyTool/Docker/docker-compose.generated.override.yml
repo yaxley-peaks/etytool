@@ -1,0 +1,23 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  etytool:
+    build:
+      context: "/home/yax/Documents/dtnet/EtyTool"
+      dockerfile: "Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/EtyTool.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_STATICWEBASSETS: "/app/bin/Debug/net8.0/EtyTool.staticwebassets.runtime.CT.json"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "etytool:dev"
+    ports: []
+    volumes:
+    - "/home/yax/.microsoft/usersecrets:/home/app/.microsoft/usersecrets"
+    - "/home/yax/.nuget/packages:/home/app/.nuget/packages"
+    - "/home/yax/Documents/dtnet/EtyTool:/app:rw"
+    - "/home/yax/Documents/dtnet/EtyTool:/src:rw"
+    working_dir: "/app"
