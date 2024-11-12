@@ -12,7 +12,6 @@ using Exception = System.Exception;
 namespace EtyTool.Services;
 
 public class EtymologyService(
-    ILogger<EtymologyService> logger,
     EtyToolContext ctx,
     IConfiguration config,
     IHttpClientFactory clientFactory)

@@ -1,6 +1,25 @@
 ﻿services:
+  postgres:
+    image: postgres:16
+    container_name: etydb
+    environment:
+      POSTGRES_USER: etytool
+      POSTGRES_PASSWORD: etytool123#
+      POSTGRES_DB: etytool
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d mydb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
   etytool:
     image: etytool
     build:
       context: .
       dockerfile: Dockerfile
+volumes:
+  postgres_data:

@@ -1,9 +1,11 @@
-using System.Configuration;
 using EtyTool.Context;
 using EtyTool.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// TODO: handle invalid words
+// TODO: handle rate limiting
 
 // Add services to the container.
 builder.Services.AddRazorPages();
