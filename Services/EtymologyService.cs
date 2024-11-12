@@ -44,10 +44,14 @@ public class EtymologyService(
                 Word1 = eDto.Word.ToUpperInvariant(),
             };
             // If language already seen, don't add another entry.
-            if (ctx.Etymologies.Count(x => x.Name == eDto.OriginLanguage.ToUpperInvariant()) == 1)
+            var etymologyResultSet = (
+                from x
+                    in ctx.Etymologies
+                where x.Name == eDto.OriginLanguage.ToUpperInvariant()
+                select x);
+            if (etymologyResultSet.Count() == 1)
             {
-                var eId = ctx.Etymologies.Where(x => eDto.OriginLanguage.ToUpperInvariant() == x.Name).Select(e => e.Id)
-                    .First()!;
+                var eId = (from e in etymologyResultSet select e.Id).First()!;
                 w.Etymology = eId;
             }
             else
@@ -72,8 +76,9 @@ public class EtymologyService(
         EtymologyDto eDto = new EtymologyDto();
         if (ctx.Words.Count(x => x.Word1 == word.ToUpperInvariant()) == 1)
         {
-            Word w = ctx.Words.Include(w => w.EtymologyNavigation)
-                .First(x => x.Word1.Equals(word.ToUpperInvariant()))!;
+            Word w = (from a in ctx.Words.Include(w => w.EtymologyNavigation)
+                where a.Word1.Equals(word.ToUpperInvariant())
+                select a).First()!;
             eDto.Word = w.Word1.ToUpperInvariant();
             eDto.OriginLanguage = w.EtymologyNavigation.Name.ToUpperInvariant();
         }
