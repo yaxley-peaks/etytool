@@ -90,8 +90,10 @@ public class EtymologyService(
         var words = string.Concat(ety.Where(x => IsAsciiLetter(x) || IsWhiteSpace(x))).Split(' ');
         var language = words
             .Where(x => IsUpper(x[0]))
-            .First(x => x is not ("Middle" or "Upper" or "Ancient" or "Late" or "New" or "Modern"));
-        return language;
+            .FirstOrDefault(x => x is not ("Middle" or "Upper" or "Ancient" or "Late" or "New" or "Modern" or "Medieval"));
+  
+
+        return language ?? "UNKNOWN";
     }
 
     private EtymologyDto GetEtymology(string word)
@@ -123,11 +125,16 @@ public class EtymologyService(
         return eDto;
     }
 
-    public void Do()
+    /// <summary>
+    /// Takes some text and returns etymology of every word
+    /// </summary>
+    /// <returns>List of Etymologies</returns>
+    public List<EtymologyDto> Do(string text)
     {
-        var e = GetEtymology("information");
-        logger.Log(LogLevel.Information, $"Word: {e.Word}, origin: {e.OriginLanguage}");
-        e = GetEtymology("information");
-        logger.Log(LogLevel.Information, $"Word: {e.Word}, origin: {e.OriginLanguage}");
+        var cleanText = String.Concat(text
+            .Where(x => IsWhiteSpace(x) || IsAsciiLetter(x))
+            .Select(ToLowerInvariant));
+        var wordList = cleanText.Split(' ');
+        return wordList.Select(GetEtymology).ToList();
     }
 }

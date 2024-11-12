@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EtyTool.Pages;
 
-public class IndexModel(ILogger<IndexModel> logger, LangService ls, EtymologyService es)
+public class IndexModel(ILogger<IndexModel> logger, LangService ls, EtymologyService es, SharedDataService sds)
     : PageModel
 {
     public SelectList? SelectList { get; set; }
@@ -20,7 +20,6 @@ public class IndexModel(ILogger<IndexModel> logger, LangService ls, EtymologySer
         logger.Log(LogLevel.Information, "Get Page");
         SelectList = new SelectList(ls.Langs,
             nameof(Lang.Id), nameof(Lang.Name));
-        es.Do();
         return Page();
     }
 
@@ -29,6 +28,7 @@ public class IndexModel(ILogger<IndexModel> logger, LangService ls, EtymologySer
         if (FormDto == null || !ModelState.IsValid) return RedirectToPage();
         logger.Log(LogLevel.Information,
             $"Language: {FormDto.Language} Text: {FormDto.Text}");
-        return RedirectToPage();
+        sds.EDtos = es.Do(FormDto.Text);
+        return RedirectToPage("EtymologyDisplay");
     }
 }

@@ -1,0 +1,7 @@
+table {
+    overflow: auto;
+}
+table, th, td {
+    border: 1px solid;
+    padding: 0.3em;
+}

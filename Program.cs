@@ -21,6 +21,7 @@ builder.Services.AddHttpClient(
     });
 
 builder.Services.AddSingleton<LangService>();
+builder.Services.AddSingleton<SharedDataService>();
 builder.Services.AddScoped<EtymologyService>();
 var app = builder.Build();
 

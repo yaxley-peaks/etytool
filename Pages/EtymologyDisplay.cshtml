@@ -1,0 +1,25 @@
+@page
+@using EtyTool.Models
+@model EtyTool.Pages.EtymologyDisplay
+@{
+    ViewData["Title"] = "Etymology Breakdown";
+    var edtos = Model.EtymologyDtos!;
+}
+
+
+<div>
+    <table>
+        <tr>
+        @foreach (var e in edtos)
+        {
+                <td>@e.Word</td>
+        }
+        </tr>
+        <tr>
+        @foreach (var e in edtos)
+        {
+            <td>@e.OriginLanguage</td>
+        }
+        </tr>
+    </table>
+</div>
