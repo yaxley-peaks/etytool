@@ -12,7 +12,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<EtyToolContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("default")));
 
-var mwClientName = builder.Configuration["MWHttpClientName"];
+var mwClientName = builder.Configuration["CustomConfig:MWHttpClientName"];
 ArgumentException.ThrowIfNullOrEmpty(mwClientName);
 builder.Services.AddHttpClient(
     mwClientName,

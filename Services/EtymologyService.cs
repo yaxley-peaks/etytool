@@ -17,12 +17,14 @@ public class EtymologyService(
     IHttpClientFactory clientFactory)
 {
     private readonly string _apiKey = config["Dictionary:MW:Key"]!;
+    private readonly List<string> _adjectives = config.GetSection("CustomConfig:Adjectives").Get<List<string>>()!;
+
 
     private async Task<List<(string, string)>> GetApiResponse(string word)
     {
         if (word.Contains(' ')) throw new Exception("Word cannot contain spaces");
 
-        var httpClientName = config["MWHttpClientName"];
+        var httpClientName = config["CustomConfig:MWHttpClientName"];
         var client = clientFactory.CreateClient(httpClientName!);
         var results = await client.GetAsync($"{word}?key={_apiKey}");
         var contents = await results.Content.ReadAsStringAsync();
@@ -87,10 +89,12 @@ public class EtymologyService(
     private string GetOriginLanguage(string ety)
     {
         var words = string.Concat(ety.Where(x => IsAsciiLetter(x) || IsWhiteSpace(x))).Split(' ');
-        var language = words
+        var languages = words
+            .Where(x => x.Length != 0)
             .Where(x => IsUpper(x[0]))
-            .FirstOrDefault(x => x is not ("Middle" or "Upper" or "Ancient" or "Late" or "New" or "Modern" or "Medieval"));
-  
+            .Where(x => !_adjectives.Contains(x)).ToList();
+        languages = languages.Count > 1 ? languages.SkipLast(1).ToList() : languages;
+        var language = languages.LastOrDefault(x => !_adjectives.Contains(x));
 
         return language ?? "UNKNOWN";
     }
