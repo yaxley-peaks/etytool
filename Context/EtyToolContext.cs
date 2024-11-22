@@ -20,6 +20,23 @@ public partial class EtyToolContext : DbContext
 
     public virtual DbSet<Word> Words { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSeeding((context, _) =>
+            {
+                var lang = context.Set<Lang>().FirstOrDefault();
+                if (lang != null) return;
+                context.Set<Lang>().Add(new Lang()
+                    {
+                        Code = "en",
+                        Name = "English"
+                    }
+                );
+                context.SaveChanges();
+            }
+        );
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Etymology>(entity =>
